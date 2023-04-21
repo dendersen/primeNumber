@@ -51,7 +51,7 @@ int main() {
   primes[0] = (0b11101100UL | 0xffffff00UL);
   // long t = java.lang.System.currentTimeMillis();
   unsigned long i = 2;
-  printf("running    \r");
+  terminal((long)((log(i)/log(sqrt(max)))*(float)terminalLength), terminalLength, currentTerm,"");
   while (run(i)){
     if(!read(i)){
       i++;
