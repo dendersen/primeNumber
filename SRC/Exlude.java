@@ -16,7 +16,6 @@ public class Exlude {
 
   public static void main(String[] args) {
     
-    System.in.mark(terminalLength);
     Scanner scan = new Scanner(System.in);
     System.out.println("\nhow far do you wish to search");
     while(true){
@@ -80,7 +79,7 @@ public class Exlude {
   public static void terminal(int point, int end, int length, String info){
     if(point == length){
       System.out.print(("\033[" + (end+2) + "C"));
-      System.out.print(cur + " " + info + "\r");
+      System.out.print(info + "    \r");
       return;
     }
     String out = "<";
@@ -103,7 +102,7 @@ public class Exlude {
           System.out.print(i + ",");
           count++;
         }else{
-          System.out.print(i + ",");
+          System.out.print(i + "\n");
           count = 0;
         }
       }

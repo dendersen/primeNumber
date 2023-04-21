@@ -1,16 +1,15 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Recursive {
+public class OptExclude {
   public static int max;
   static int data = 32;
   static int[] notPrimes;
   static ArrayList<Long> primes = new ArrayList<Long>();
   static int amount = 0;
-  static int terminalLength = 10;
+  static int terminalLength = 50;
   static int currentTerm = -1;
   static long counter = 0;
-  static String cur = "";
 
   public static void main(String[] args) {
     
@@ -30,24 +29,23 @@ public class Recursive {
     for (int i = 0; i < notPrimes.length; i++) {
       notPrimes[i] = 0xffffffff;
     }
-    notPrimes[0] = (0b11001100 | 0xffffff00);
-    primes.add((long)2);
-    primes.add((long)3);
-    calc(2, 0,false);
+    notPrimes[0] &= (0xffffff00 | 0b10101100 );
     long t = java.lang.System.currentTimeMillis();
-    amount = 2;
-    long i = 3;
+    amount = 0;
+    long i = 2;
+    counter= 2;
     System.out.print("running    \r");
+    
     while (run(i)){
       if(!read(i)){
+        calc(i);
         i++;
         continue;
       }
       primes.add(i);
-      calc(i,primes.size()-1,false);
+      calc(i);
       
-      terminal((int)(((float)i)/((float)notPrimes.length*(float)data)*(float)terminalLength), terminalLength, currentTerm,""+i);
-      // System.out.print(i + "\r");
+      terminal((int)(((float)i)/((float)notPrimes.length*(float)data)*(float)terminalLength), terminalLength, currentTerm,""+((notPrimes.length*data)-counter));
       i++;
       amount++;
     }
@@ -60,15 +58,13 @@ public class Recursive {
     scan.close();
     return;
   }
-  private static void calc(long i,int index, boolean isSkip) {
-    long temp = i*primes.get(index);
-    if(temp >= notPrimes.length * data || temp < 0) return;
-    if(index >= 1){
-      calc(i, index-1,true);
-      calc(temp, index-1,false);
+  private static void calc(long i) {
+    // write(i*i);
+    for (int j = 0; j < primes.size(); j++) {
+      if(!write(i*primes.get(j))){
+        return;
+      };
     }
-    if(write(temp))//TODO: gang alle tal mad alle andre fundne prime
-    calc(temp,index, false);
   }
   public static boolean read(long num){
     if(num >= notPrimes.length * data || num < 0) return false;
@@ -78,8 +74,8 @@ public class Recursive {
     if(num < notPrimes.length * data && num > 0){
       if(read(num)){
         counter++;
+        notPrimes[(int)((num-num%data)/data)] &= ~(1<<(num%data));
       }
-      notPrimes[(int)((num-num%data)/data)] &= ~(1<<(num%data));
       return true;
     }
     return false;
@@ -90,7 +86,7 @@ public class Recursive {
   public static void terminal(int point, int end, int length, String info){
     if(point == length){
       System.out.print(("\033[" + (end+2) + "C"));
-      System.out.print("\r" + cur + " " + info + "\r");
+      System.out.print(info + "    \r");
       return;
     }
     String out = "<";
@@ -101,7 +97,6 @@ public class Recursive {
     }
     out = new String(temp);
     System.out.print("\r" + out + " " + info + "\r");
-    cur = out;
     currentTerm = point;
   }
   public static void printPrimes(){

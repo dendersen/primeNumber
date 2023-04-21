@@ -5,6 +5,10 @@
     "xlocale": "cpp",
     "initializer_list": "cpp",
     "xutility": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "algorithm": "c",
+    "xiosbase": "c",
+    "cmath": "c",
+    "stdlib.h": "c"
   }
 }
